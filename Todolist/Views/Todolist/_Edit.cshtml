@@ -1,0 +1,41 @@
+﻿@using Todolist.ViewModels
+@model TaskVm
+@{
+    AjaxOptions ajaxOptions = new AjaxOptions
+    {
+        OnSuccess = "onSuccess",
+        OnFailure = "onFailure"
+    };
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">@Model.Title</h4>
+    </div>
+    @using (Ajax.BeginForm("Edit", "Todolist", FormMethod.Post, ajaxOptions, new { @class = "form", @id = "AjaxForm", role = "form" }))
+    {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.TodolistId)
+            @Html.HiddenFor(m => m.EnrollmentDate)
+            <div class="form-group" id="ErrorMsg">
+                @Html.LabelFor(m => m.TaskDescription)
+                @Html.EditorFor(m => m.TaskDescription, new { htmlAttributes = new { @class = "form-control" } })
+                <div id="Results" class="text-success"></div>
+            </div>
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBoxFor(m => m.Approved)
+                    Задача решена
+                </label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <input type="submit" id="Submit" value="Save" class="btn btn-success" />
+        </div>
+    }
+</div>
+<script src="@Url.Content("~/Scripts/custom-validator.js")"></script>
+
+
