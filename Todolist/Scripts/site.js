@@ -1,17 +1,23 @@
 var _partialContentUrl;
 var _checkCoincidencesUrl;
+var _dataPaginationUrl;
 
-function initUrls(partialContentUrl, checkCoincidencesUrl) {
+function initUrls(partialContentUrl, checkCoincidencesUrl, dataPaginationUrl) {
     _partialContentUrl = partialContentUrl;
     _checkCoincidencesUrl = checkCoincidencesUrl;
+    _dataPaginationUrl = dataPaginationUrl;
 }
 
 $(document).ready(function () {
     $('#Datatables').DataTable({
-        paging: true,
+        "processing": true,
+        "serverSide": true,
+        "ajax": _dataPaginationUrl,
+        "paging": true,
         "lengthMenu": [[3, 6, 10, -1], [3, 6, 10, "All"]]
     });
 });
+
 
 $(document).on("click", "#AddTask", function (e) {
     $.get($(this).data("url"), function (data) {
@@ -28,23 +34,23 @@ $(document).on("click", ".ajaxLink", function (e) {
     });
 });
 
-$(document).on("click", ".sort", function (e) {
-    var descending = $(this).data("descending");
-    var sortColumn = $(this).data("column");
-    var data = { sortColumn: sortColumn, descending: descending };
-    $(this).data("descending", !descending);
-    $.ajax({
-        url: _partialContentUrl,
-        type: "GET",
-        data: data,
-        success: function (result) {
-            $("#PartialContent").html(result);
-        },
-        error: function () {
-            $("#PartialContent").html("Запрос не выполнен!");
-        }
-    });
-});
+//$(document).on("click", ".sort", function (e) {
+//  var descending = $(this).data("descending");
+//  var sortColumn = $(this).data("column");
+//  var data = { sortColumn: sortColumn, descending: descending };
+//  $(this).data("descending", !descending);
+//  $.ajax({
+//     url: _partialContentUrl,
+//     type: "GET",
+//    data: data,
+//    success: function (result) {
+//        $("#PartialContent").html(result);
+//    },
+//   error: function () {
+//       $("#PartialContent").html("Запрос не выполнен!");
+//   }
+// });
+//});
 
 $(document).on("input", "#TaskDescription", function (e) {
     checkCoincidences(_checkCoincidencesUrl);

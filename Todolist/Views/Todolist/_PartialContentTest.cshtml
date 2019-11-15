@@ -1,0 +1,23 @@
+﻿@using Todolist.ViewModels
+@model TasksVm
+@if (Model != null)
+{
+    foreach (var item in Model.TasksPage)
+    {
+<tr class="@(!item.Approved ? " " : " danger")">
+    <td>
+        @item.TaskDescription
+    </td>
+    <td>
+        @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
+    </td>
+    <td>
+        @(!item.Approved ? "В процессе" : "Решена")
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId }, new { @class = "ajaxLink" }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
+    </td>
+</tr>
+    }
+}

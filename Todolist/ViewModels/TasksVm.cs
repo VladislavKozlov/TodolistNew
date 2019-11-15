@@ -10,5 +10,7 @@ namespace Todolist.ViewModels
     public class TasksVm
     {
         public List<TodolistModel> Tasks { get; set; }
+        public IEnumerable<TodolistModel> TasksPage { get; set; }
+        public PagingInfo PagingInfoVm { get; set; }
     }
 }

@@ -24,7 +24,9 @@ namespace Todolist
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/site").Include(                        
+            bundles.Add(new ScriptBundle("~/bundles/site").Include(
+                        "~/Scripts/datatables.min.js",
+                        "~/Scripts/datatables.scrollingPagination.js",
                         "~/Scripts/site.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/customvalidator").Include(
@@ -32,7 +34,7 @@ namespace Todolist
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/datatables.css",
+                      "~/Content/datatables.min.css",
                       "~/Content/site.css"));
         }
     }

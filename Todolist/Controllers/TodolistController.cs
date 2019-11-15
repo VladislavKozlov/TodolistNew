@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 using Todolist.Models;
@@ -24,7 +25,7 @@ namespace Todolist.Controllers
         {
             try
             {
-                var tasks = _taskService.GetTasks();
+                var tasks = _taskService.GetTasksPaging();
                 return View(tasks);
             }
             catch (Exception e)
@@ -45,6 +46,73 @@ namespace Todolist.Controllers
             {
                 ViewBag.Error = "Ошибка доступа к данным!";
                 return PartialView("_PartialContent");
+            }
+        }
+
+        public ActionResult PartialContentTest(int start, int length)
+        {
+            try
+            {
+                int page = 1;
+                if (start != 0)
+                {
+                    page = start / length;
+                }
+                var tasks = _taskService.GetTasksPaging(page, length);
+                return PartialView("_PartialContentTest", tasks);
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = "Ошибка доступа к данным!";
+                return PartialView("_PartialContenTest");
+            }
+        }
+
+        public JsonResult DataPagination(int start, int length)
+        {
+            try
+            {
+                int page = 0;
+                if (start == 0)
+                {
+                    page = 1;
+                }
+                if (start == length)
+                {
+                    page = 2;
+                }
+                if (start > length)
+                {
+                    page = start / length + 1;
+                }
+                //string data = JsonConvert.SerializeObject(tasks.TasksPage);
+                var tasks = _taskService.GetTasksPaging(page, length);
+                //int recordsTotal = tasks.PagingInfoVm.TotalItems;                
+
+                JArray jsonData = new JArray();
+                foreach (var tasksItem in tasks.TasksPage)
+                {
+                    jsonData.Add(tasksItem.TaskDescription);
+                    jsonData.Add(tasksItem.EnrollmentDate);
+                    jsonData.Add(!tasksItem.Approved ? "В процессе" : "Решена");
+                }
+                int recordsTotal = jsonData.Count();
+                int recordsFiltered = recordsTotal;
+                JObject jObject = new JObject();
+                jObject["data"] = jsonData;
+                string data = jObject.ToString();
+
+                return Json(new
+                {
+                    recordsTotal,
+                    recordsFiltered,
+                    data
+                },
+                    JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { ErrorMsg = "Ошибка доступа к БД!" });
             }
         }
 
