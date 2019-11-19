@@ -199,6 +199,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attribute\AllowJsonGetAttribute.cs" />
+    <Compile Include="Json\JsonData.cs" />
     <Compile Include="ContextDb\ITodolistDbContext.cs" />
     <Compile Include="ContextDb\TodolistModel.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -250,7 +252,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\site.js" />
-    <Content Include="Views\Todolist\_PartialContentTest.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />

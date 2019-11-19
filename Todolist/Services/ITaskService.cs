@@ -10,7 +10,6 @@ namespace Todolist.Services
     public interface ITaskService
     {
         TasksVm GetTasksPaging(int page = 1, int length = 0);
-        TasksVm GetTasks(string sortColumn = "", bool descending = false);
         void Add(TaskInput taskInput);
         void Edit(TaskInput taskInput);
         void Remove(int id);

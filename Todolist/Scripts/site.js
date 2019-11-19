@@ -14,10 +14,15 @@ $(document).ready(function () {
         "serverSide": true,
         "ajax": _dataPaginationUrl,
         "paging": true,
-        "lengthMenu": [[3, 6, 10, -1], [3, 6, 10, "All"]]
+        "lengthMenu": [[3, 6, 10, -1], [3, 6, 10, "All"]],
+        "columns": [
+            { data: "Description" },
+            { data: "Date" },
+            { data: "Status" },
+            { data: "Empty" }
+        ]
     });
 });
-
 
 $(document).on("click", "#AddTask", function (e) {
     $.get($(this).data("url"), function (data) {

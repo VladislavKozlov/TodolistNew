@@ -38,13 +38,6 @@ namespace Todolist.Services
             return tasksVm;
         }
 
-        public TasksVm GetTasks(string sortColumn = "", bool descending = false)
-        {
-            var tasks = _taskRepository.GetTasks(sortColumn, descending);
-            TasksVm tasksVm = new TasksVm { Tasks = tasks };
-            return tasksVm;
-        }
-
         public bool SearchTaskDescription(string taskDescription, int todolistIdOrZero)
         {
             return _taskRepository.Search(taskDescription, todolistIdOrZero);

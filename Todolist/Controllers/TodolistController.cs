@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Todolist.Attribute;
+using Todolist.Json;
 using Todolist.Models;
 using Todolist.Services;
 using Todolist.ViewModels;
@@ -35,11 +37,11 @@ namespace Todolist.Controllers
             }
         }
 
-        public ActionResult PartialContent(string sortColumn = "", bool descending = false)
+        public ActionResult PartialContent()
         {
             try
             {
-                var tasks = _taskService.GetTasks(sortColumn, descending);
+                var tasks = _taskService.GetTasksPaging();
                 return PartialView("_PartialContent", tasks);
             }
             catch (Exception e)
@@ -49,66 +51,33 @@ namespace Todolist.Controllers
             }
         }
 
-        public ActionResult PartialContentTest(int start, int length)
-        {
-            try
-            {
-                int page = 1;
-                if (start != 0)
-                {
-                    page = start / length;
-                }
-                var tasks = _taskService.GetTasksPaging(page, length);
-                return PartialView("_PartialContentTest", tasks);
-            }
-            catch (Exception e)
-            {
-                ViewBag.Error = "Ошибка доступа к данным!";
-                return PartialView("_PartialContenTest");
-            }
-        }
-
+        [AllowJsonGet]
         public JsonResult DataPagination(int start, int length)
         {
             try
             {
-                int page = 0;
-                if (start == 0)
-                {
-                    page = 1;
-                }
-                if (start == length)
-                {
-                    page = 2;
-                }
-                if (start > length)
-                {
-                    page = start / length + 1;
-                }
-                //string data = JsonConvert.SerializeObject(tasks.TasksPage);
+                var page = start / length + 1;
                 var tasks = _taskService.GetTasksPaging(page, length);
-                //int recordsTotal = tasks.PagingInfoVm.TotalItems;                
-
-                JArray jsonData = new JArray();
+                int recordsTotal = tasks.PagingInfoVm.TotalItems;
+                int recordsFiltered = recordsTotal;
+                List<JsonData> data = new List<JsonData>();
                 foreach (var tasksItem in tasks.TasksPage)
                 {
-                    jsonData.Add(tasksItem.TaskDescription);
-                    jsonData.Add(tasksItem.EnrollmentDate);
-                    jsonData.Add(!tasksItem.Approved ? "В процессе" : "Решена");
+                    JsonData dataRow = new JsonData
+                    {
+                        Description = tasksItem.TaskDescription,
+                        Date = tasksItem.EnrollmentDate.ToString(string.Format("dd /MM/yyyy HH:mm")),
+                        Status = !tasksItem.Approved ? "В процессе" : "Решена",
+                        Empty = ""
+                    };
+                    data.Add(dataRow);
                 }
-                int recordsTotal = jsonData.Count();
-                int recordsFiltered = recordsTotal;
-                JObject jObject = new JObject();
-                jObject["data"] = jsonData;
-                string data = jObject.ToString();
-
                 return Json(new
                 {
                     recordsTotal,
                     recordsFiltered,
                     data
-                },
-                    JsonRequestBehavior.AllowGet);
+                });
             }
             catch (Exception e)
             {
