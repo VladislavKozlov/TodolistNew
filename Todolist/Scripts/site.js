@@ -24,7 +24,7 @@ $(document).ready(function () {
     });
 });
 
-$(document).on("click", "#AddTask", function (e) {
+$(document).on("click", "#AddTask", function () {
     $.get($(this).data("url"), function (data) {
         $("#DialogContent").html(data);
         $("#ModDialog").modal("show");

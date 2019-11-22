@@ -68,7 +68,8 @@ namespace Todolist.Controllers
                         Description = tasksItem.TaskDescription,
                         Date = tasksItem.EnrollmentDate.ToString(string.Format("dd /MM/yyyy HH:mm")),
                         Status = !tasksItem.Approved ? "В процессе" : "Решена",
-                        Empty = ""
+                        Empty = "<a href=" + Url.Action("Edit", new { id = tasksItem.TodolistId }) + " class='ajaxLink'>Edit</a> | <a href=" +
+                        Url.Action("Delete", new { id = tasksItem.TodolistId }) + " class='ajaxLink'>Delete</a>"
                     };
                     data.Add(dataRow);
                 }
