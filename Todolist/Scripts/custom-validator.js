@@ -22,8 +22,8 @@
         },
         messages: {
             "TaskDescription": {
-                required: "Данное поле должно быть заполнено!",
-                maxlength: "Описание задачи не может быть больше 100 символов!"
+                required: "Task description is required!",
+                maxlength: "Task description cannot be more than 100 characters!"
             }
         }
     });

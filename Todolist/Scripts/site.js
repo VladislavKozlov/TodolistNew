@@ -56,7 +56,7 @@ function onSuccess(result) {
 }
 
 function onFailure() {
-    $("#Results").html("Запрос не выполнен!");
+    $("#Results").html("Request failed!");
 }
 
 function refreshPartialContent() {
@@ -103,7 +103,7 @@ function checkCoincidences() {
             }
         },
         error: function () {
-            $("#Results").html("Запрос не выполнен!");
+            $("#Results").html("Request failed!");
         }
     });
 }

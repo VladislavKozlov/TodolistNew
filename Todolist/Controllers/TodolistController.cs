@@ -31,7 +31,7 @@ namespace Todolist.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Error = "Ошибка доступа к данным!";
+                ViewBag.Error = "Data access error!";
                 return View();
             }
         }
@@ -45,7 +45,7 @@ namespace Todolist.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Error = "Ошибка доступа к данным!";
+                ViewBag.Error = "Data access error!";
                 return PartialView("_PartialContent");
             }
         }
@@ -82,8 +82,8 @@ namespace Todolist.Controllers
                     JsonData dataRow = new JsonData
                     {
                         TaskDescription = tasksItem.TaskDescription,
-                        EnrollmentDate = tasksItem.EnrollmentDate.ToString(string.Format("dd /MM/yyyy HH:mm")),
-                        Approved = !tasksItem.Approved ? "В процессе" : "Решена",
+                        EnrollmentDate = tasksItem.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm")),
+                        Approved = !tasksItem.Approved ? "In progress " : "Done",
                         Empty = "<a href=" + Url.Action("Edit", new { id = tasksItem.TodolistId }) + " class='ajaxLink'>Edit</a> | <a href=" +
                         Url.Action("Delete", new { id = tasksItem.TodolistId }) + " class='ajaxLink'>Delete</a>"
                     };
@@ -98,7 +98,7 @@ namespace Todolist.Controllers
             }
             catch (Exception e)
             {
-                return Json(new { ErrorMsg = "Ошибка доступа к БД!" });
+                return Json(new { ErrorMsg = "Data access error!" });
             }
         }
 
@@ -107,7 +107,7 @@ namespace Todolist.Controllers
         {
             if (_taskService.SearchTaskDescription(taskDescription, taskId))
             {
-                return Json(new { EnableError = true, ErrorMsg = "Такая задача уже существует, введите другое название!" });
+                return Json(new { EnableError = true, ErrorMsg = "Task already exists, enter another name!" });
             }
             return Json(new { EnableSuccess = true, SuccessMsg = "" });
         }
@@ -115,7 +115,7 @@ namespace Todolist.Controllers
         public ActionResult Create()
         {
             TaskVm taskVm = new TaskVm();
-            taskVm.Title = "Добавление задачи";
+            taskVm.Title = "Task adding";
             return PartialView("_Create", taskVm);
         }
 
@@ -127,7 +127,7 @@ namespace Todolist.Controllers
             {
                 if (_taskService.SearchTaskDescription(taskInput.TaskDescription, 0))
                 {
-                    return Json(new { EnableError = true, ErrorMsg = "Такая задача уже существует, введите другое название!" });
+                    return Json(new { EnableError = true, ErrorMsg = "Task already exists, enter another name!" });
                 }
                 if (ModelState.IsValid)
                 {
@@ -138,18 +138,18 @@ namespace Todolist.Controllers
                     string validationErrors = string.Join(",", ModelState.Values.Where(E => E.Errors.Count > 0).SelectMany(E => E.Errors).Select(E => E.ErrorMessage).ToArray());
                     return Json(new { EnableError = true, ErrorMsg = validationErrors });
                 }
-                return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно создана!" });
+                return Json(new { EnableSuccess = true, SuccessMsg = "Task successfully created!" });
             }
             catch (Exception)
             {
-                return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, попробуйте ещё раз или обратитесь к системному администратору!" });
+                return Json(new { EnableError = true, ErrorMsg = "Something went wrong, try again or contact your system administrator!" });
             }
         }
 
         public ActionResult Edit(int id)
         {
             TaskVm taskVm = _taskService.Get(id);
-            taskVm.Title = "Редактирование задачи";
+            taskVm.Title = "Task editing";
             return PartialView("_Edit", taskVm);
         }
 
@@ -161,7 +161,7 @@ namespace Todolist.Controllers
             {
                 if (_taskService.SearchTaskDescription(taskInput.TaskDescription, taskInput.TodolistId))
                 {
-                    return Json(new { EnableError = true, ErrorMsg = "Такая задача уже существует, введите другое название!" });
+                    return Json(new { EnableError = true, ErrorMsg = "Task already exists, enter another name!" });
                 }
                 if (ModelState.IsValid)
                 {
@@ -172,18 +172,18 @@ namespace Todolist.Controllers
                     string validationErrors = string.Join(",", ModelState.Values.Where(E => E.Errors.Count > 0).SelectMany(E => E.Errors).Select(E => E.ErrorMessage).ToArray());
                     return Json(new { EnableError = true, ErrorMsg = validationErrors });
                 }
-                return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно отредактирована!" });
+                return Json(new { EnableSuccess = true, SuccessMsg = "Task successfully edited!" });
             }
             catch (Exception)
             {
-                return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, попробуйте ещё раз или обратитесь к системному администратору!" });
+                return Json(new { EnableError = true, ErrorMsg = "Something went wrong, try again or contact your system administrator!" });
             }
         }
 
         public ActionResult Delete(int id)
         {
             TaskVm taskVm = _taskService.Get(id);
-            taskVm.Title = "Удаление задачи";
+            taskVm.Title = "Task deleting";
             return PartialView("_Delete", taskVm);
         }
 
@@ -197,9 +197,9 @@ namespace Todolist.Controllers
             }
             catch (Exception)
             {
-                return Json(new { EnableError = true, ErrorMsg = "Удаление не произошло, попробуйте ещё раз или обратитесь к системному администратору!" });
+                return Json(new { EnableError = true, ErrorMsg = "Deletion did not, try again or contact your system administrator!" });
             }
-            return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно удалена!" });
+            return Json(new { EnableSuccess = true, SuccessMsg = "Task successfully deleted!" });
         }
     }
 }

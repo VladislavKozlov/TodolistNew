@@ -11,8 +11,8 @@ namespace Todolist.Models
     {
         public int TodolistId { get; set; }
 
-        [Required(ErrorMessage = "Описание задачи должно быть заполнено!")]
-        [StringLength(100, ErrorMessage = "Описание не может быть более длинным чем 100 символов!")]
+        [Required(ErrorMessage = "Task description is required!")]
+        [StringLength(100, ErrorMessage = "Task description cannot be more than 100 characters!")]
         public string TaskDescription { get; set; }
 
         public DateTime EnrollmentDate { get; set; }

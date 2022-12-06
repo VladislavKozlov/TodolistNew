@@ -12,12 +12,12 @@ namespace Todolist.ViewModels
     {
         public int TodolistId { get; set; }
 
-        [Display(Name = "Описание задачи")]
+        [Display(Name = "Description")]
         public string TaskDescription { get; set; }
 
         public DateTime EnrollmentDate { get; set; }
 
-        [Display(Name = "Задача решена")]
+        [Display(Name = "Status")]
         public bool Approved { get; set; }
 
         public string Title { get; set; }

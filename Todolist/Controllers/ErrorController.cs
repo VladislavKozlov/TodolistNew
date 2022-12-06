@@ -17,13 +17,13 @@ namespace Todolist.Controllers
 
         public ActionResult Http404()
         {
-            ViewBag.Error = "Страница не найдена!";
+            ViewBag.Error = "Page not found!";
             return View("Error");
         }
 
         public ActionResult Http403()
         {
-            ViewBag.Error = "Доступ запрещён!";
+            ViewBag.Error = "Access denied!";
             return View("Error");
         }
     }
