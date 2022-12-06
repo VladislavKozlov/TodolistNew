@@ -1,57 +1,11 @@
 ﻿@using Todolist.ViewModels
 @model TasksVm
-@*<table id="Datatables" class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <td class="sort" data-column="TaskDescription" data-descending="false">
-                Описание задачи
-            </td>
-            <td class="sort" data-column="EnrollmentDate" data-descending="false">
-                Дата
-            </td>
-            <td class="sort" data-column="Approved" data-descending="false">
-                Статус
-            </td>
-            <td></td>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null)
-        {
-            foreach (var item in Model.TasksPage)
-            {
-                <tr class="@(!item.Approved ? "" : "danger")">
-                    <td>
-                        @item.TaskDescription
-                    </td>
-                    <td>
-                        @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
-                    </td>
-                    <td>
-                        @(!item.Approved ? "В процессе" : "Решена")
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId }, new { @class = "ajaxLink" }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>*@
-
 <table id="Datatables" class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>
-                Описание задачи
-            </th>
-            <th>
-                Дата
-            </th>
-            <th>
-                Статус
-            </th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>

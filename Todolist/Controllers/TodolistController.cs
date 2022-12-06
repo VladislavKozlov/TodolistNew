@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Todolist.Attribute;
 using Todolist.Json;
 using Todolist.Models;
 using Todolist.Services;
@@ -51,23 +50,40 @@ namespace Todolist.Controllers
             }
         }
 
-        [AllowJsonGet]
-        public JsonResult DataPagination(int start, int length)
+
+        [HttpPost]
+        public JsonResult TasksAsDataTables(JsonPostData jsonPostData)
         {
             try
             {
+                string sortColumn = "";
+                int sortColumnNumber = 0;
+                string dir = "";
+                string searchValue = jsonPostData.Search.Value;
+                bool searchRegex = jsonPostData.Search.Regex;
+
+                foreach (var orderRow in jsonPostData.Order)
+                {
+                    sortColumnNumber = orderRow.Column;
+                    dir = orderRow.Dir;
+                }
+                sortColumn = jsonPostData.Columns[sortColumnNumber].Data;
+                bool descending = (dir == "desc") ? true : false;
+                int start = jsonPostData.Start;
+                int length = jsonPostData.Length;
                 var page = start / length + 1;
-                var tasks = _taskService.GetTasksPaging(page, length);
+                var tasks = _taskService.GetTasksPaging(page, length, sortColumn, descending);
                 int recordsTotal = tasks.PagingInfoVm.TotalItems;
                 int recordsFiltered = recordsTotal;
                 List<JsonData> data = new List<JsonData>();
+
                 foreach (var tasksItem in tasks.TasksPage)
                 {
                     JsonData dataRow = new JsonData
                     {
-                        Description = tasksItem.TaskDescription,
-                        Date = tasksItem.EnrollmentDate.ToString(string.Format("dd /MM/yyyy HH:mm")),
-                        Status = !tasksItem.Approved ? "В процессе" : "Решена",
+                        TaskDescription = tasksItem.TaskDescription,
+                        EnrollmentDate = tasksItem.EnrollmentDate.ToString(string.Format("dd /MM/yyyy HH:mm")),
+                        Approved = !tasksItem.Approved ? "В процессе" : "Решена",
                         Empty = "<a href=" + Url.Action("Edit", new { id = tasksItem.TodolistId }) + " class='ajaxLink'>Edit</a> | <a href=" +
                         Url.Action("Delete", new { id = tasksItem.TodolistId }) + " class='ajaxLink'>Delete</a>"
                     };

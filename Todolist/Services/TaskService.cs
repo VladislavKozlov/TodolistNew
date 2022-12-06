@@ -22,11 +22,11 @@ namespace Todolist.Services
             _taskRepository = taskRepository;
         }
 
-        public TasksVm GetTasksPaging(int page = 1, int length = 0)
+        public TasksVm GetTasksPaging(int page = 1, int length = 0, string sortColumn = "", bool descending = false)
         {
             int pageSize = length;
             TasksVm tasksVm;
-            var pagiList = _taskRepository.GetTasks();
+            var pagiList = _taskRepository.GetTasks(sortColumn, descending);
             if (length == 0)
             {
                 tasksVm = new TasksVm { TasksPage = pagiList };

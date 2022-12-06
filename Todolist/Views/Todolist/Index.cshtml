@@ -7,9 +7,11 @@
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <div id="InfoMessage"></div>
 </div>
-<br /><br />
+<br />
+<br />
 <button type="button" class="btn btn-info" data-url="@Url.Action("Create")" id="AddTask">Add Task</button>
-<br /><br />
+<br />
+<br />
 <div id="PartialContent">
     @Html.Partial("_PartialContent", Model)
 </div>
@@ -20,13 +22,11 @@
     <div id="DialogContent" class="modal-dialog">
     </div>
 </div>
-<script src="@Url.Content("~/Scripts/site.js")"></script>
-<script src="@Url.Content("~/Scripts/datatables.min.js")"></script>
-<script src="@Url.Content("~/Scripts/datatables.scrollingPagination.js")"></script>
+<script src='@Url.Content("~/Scripts/site.js")'></script>
+<script src='@Url.Content("~/Scripts/datatables.min.js")'></script>
 <script>
-    initUrls('@Url.Action("PartialContent", "Todolist")',
-             '@Url.Action("CheckCoincidences", "Todolist")',
-             '@Url.Action("DataPagination", "Todolist")');
+    initUrls('@Url.Action("CheckCoincidences", "Todolist")',
+             '@Url.Action("TasksAsDataTables", "Todolist")');
 </script>
 
 

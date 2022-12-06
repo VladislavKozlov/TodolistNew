@@ -25,15 +25,13 @@ namespace Todolist
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/site").Include(
-                        "~/Scripts/datatables.min.js",
-                        "~/Scripts/datatables.scrollingPagination.js",
                         "~/Scripts/site.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/customvalidator").Include(
                         "~/Scripts/custom-validator.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap.min.css",
                       "~/Content/datatables.min.css",
                       "~/Content/site.css"));
         }

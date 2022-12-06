@@ -22,6 +22,8 @@ namespace Todolist.Repositories
         public List<TodolistModel> GetTasks(string sortColumn = "", bool descending = false)
         {
             var tasks = _dbContext.Todolists.AsEnumerable();
+            sortColumn = sortColumn ?? (sortColumn = "");
+
             foreach (var prop in typeof(TodolistModel).GetProperties())
             {
                 if (sortColumn.IndexOf(prop.Name, StringComparison.OrdinalIgnoreCase) >= 0)

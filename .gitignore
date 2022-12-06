@@ -1,0 +1,6 @@
+# TodolistNew Files
+bin/
+obj/
+.vs/
+packages/
+App_Data/

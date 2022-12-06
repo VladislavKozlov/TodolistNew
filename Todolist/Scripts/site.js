@@ -1,24 +1,32 @@
-var _partialContentUrl;
 var _checkCoincidencesUrl;
-var _dataPaginationUrl;
+var _dataTablesUrl;
 
-function initUrls(partialContentUrl, checkCoincidencesUrl, dataPaginationUrl) {
-    _partialContentUrl = partialContentUrl;
+function initUrls(checkCoincidencesUrl, dataTablesUrl) {
     _checkCoincidencesUrl = checkCoincidencesUrl;
-    _dataPaginationUrl = dataPaginationUrl;
+    _dataTablesUrl = dataTablesUrl;
 }
 
 $(document).ready(function () {
     $('#Datatables').DataTable({
         "processing": true,
         "serverSide": true,
-        "ajax": _dataPaginationUrl,
+        "searching": false,
+        "ordering": true,
+        "select": true,
+        "ajax": {
+            "type": 'POST',
+            "url": _dataTablesUrl,
+            "contentType": 'application/json; charset=utf-8',
+            'data': function (data) {
+                return data = JSON.stringify(data);
+            }
+        },
         "paging": true,
         "lengthMenu": [[3, 6, 10, -1], [3, 6, 10, "All"]],
         "columns": [
-            { data: "Description" },
-            { data: "Date" },
-            { data: "Status" },
+            { data: "TaskDescription", title: "Description" },
+            { data: "EnrollmentDate", title: "Date" },
+            { data: "Approved", title: "Status"  },
             { data: "Empty" }
         ]
     });
@@ -39,24 +47,6 @@ $(document).on("click", ".ajaxLink", function (e) {
     });
 });
 
-//$(document).on("click", ".sort", function (e) {
-//  var descending = $(this).data("descending");
-//  var sortColumn = $(this).data("column");
-//  var data = { sortColumn: sortColumn, descending: descending };
-//  $(this).data("descending", !descending);
-//  $.ajax({
-//     url: _partialContentUrl,
-//     type: "GET",
-//    data: data,
-//    success: function (result) {
-//        $("#PartialContent").html(result);
-//    },
-//   error: function () {
-//       $("#PartialContent").html("Запрос не выполнен!");
-//   }
-// });
-//});
-
 $(document).on("input", "#TaskDescription", function (e) {
     checkCoincidences(_checkCoincidencesUrl);
 });
@@ -69,17 +59,15 @@ function onFailure() {
     $("#Results").html("Запрос не выполнен!");
 }
 
-function refreshPartialContent(url) {
-    $.get(url, null, function (data) {
-        $("#PartialContent").html(data);
-    });
+function refreshPartialContent() {
+    $('#Datatables').DataTable().ajax.reload(null, false);
 }
 
 function onAjaxRequest(result) {
     if (result.EnableSuccess) {
         alertBootstrap(result.SuccessMsg);
         $("#ModDialog").modal("hide");
-        refreshPartialContent(_partialContentUrl);
+        refreshPartialContent();
     }
     if (result.EnableError) {
         $("#Results").html(result.ErrorMsg);
